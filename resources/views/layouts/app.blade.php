@@ -17,7 +17,14 @@
             </ul>
         </nav>
     </header>
-
+    <div class="">
+        
+        @if (session('status'))
+        <p style="background: red; color:white;">
+            {{session('status')}}
+        </p>
+        @endif
+    </div>
     @yield('content')
 
     <footer>

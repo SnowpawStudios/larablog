@@ -53,26 +53,30 @@ class BlogPostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\BlogPost  $blogPost
+     * @param  \App\Models\BlogPost  $post
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(BlogPost $post)
     {
         
         return view('posts.show')->with([
-            'post' => BlogPost::findOrFail($id),
+             'post' => $post,
         ]);
+        
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\BlogPost  $blogPost
+     * @param  \App\Models\BlogPost  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(BlogPost $blogPost)
+    public function edit(BlogPost $post)
     {
-        //
+        // dd('edit');
+        return view('posts.edit')->with([
+            'post'=>$post,
+        ]);
     }
 
     /**
@@ -82,9 +86,17 @@ class BlogPostController extends Controller
      * @param  \App\Models\BlogPost  $blogPost
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BlogPost $blogPost)
+    public function update(Request $request, BlogPost $post)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|min:3|max:100',
+            'body' => 'required|min:5'
+        ]);
+
+        $post->update($validated);
+        $request->session()->flash('status', 'The blog post was updated');
+
+        return redirect()->route('posts.show', ['post'=>$post->id]);
     }
 
     /**
@@ -93,8 +105,13 @@ class BlogPostController extends Controller
      * @param  \App\Models\BlogPost  $blogPost
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BlogPost $blogPost)
+    public function destroy(BlogPost $post)
     {
-        //
+        $deletedPost = $post->title;
+        $post->delete();
+
+        session()->flash('status', 'The post '. $deletedPost .' was deleted');
+        return redirect()->route('posts.index');
+
     }
 }
