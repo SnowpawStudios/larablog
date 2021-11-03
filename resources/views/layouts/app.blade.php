@@ -5,30 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+
 </head>
 <body>
-    <header>
-        <h1>LaraBlog</h1>
+    <header>           
         <nav>
-            <ul>
+            <h1>LaraBlog</h1>
+            <ul class="nav-list">
                 <li><a href="{{route('home')}}">Home</a></li>
                 <li><a href="{{route('posts.index')}}">Posts</a></li>
                 <li><a href="{{route('posts.create')}}">Create Post</a></li>
             </ul>
-        </nav>
+        </nav>       
     </header>
-    <div class="">
+    <div class="content">
         
         @if (session('status'))
-        <p style="background: red; color:white;">
+        <div class="flash-error" style="background: red; color:white;">
             {{session('status')}}
-        </p>
+        </div>
         @endif
+    
+        @yield('content')
     </div>
-    @yield('content')
 
     <footer>
         <p>This is the footer</p>
     </footer>
+    
 </body>
 </html>
